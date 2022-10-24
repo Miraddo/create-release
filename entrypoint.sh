@@ -58,5 +58,11 @@ if [ "${CREATE_RELEASE}" = "true" ] || [ "${CREATE_RELEASE}" = true ]; then
   echo ${OUTPUT} | jq
 fi;
 
-echo ::set-output name=release::${TAG}
-echo ::set-output name=upload_url::`echo ${OUTPUT} | jq --raw-output '.upload_url'`
+- name: Save state
+  run: echo "{name}={value}" >> $GITHUB_STATE
+
+- name: Set output
+  run: echo "{name}={value}" >> $GITHUB_OUTPUT
+  
+echo "release=${TAG}" >> $GITHUB_OUTPUT
+echo "upload_url=${`echo ${OUTPUT} | jq --raw-output '.upload_url'`}" >> $GITHUB_OUTPUT
